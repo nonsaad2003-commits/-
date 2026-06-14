@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الخط الزمني - فترة التسعينات</title>
+    
+    <!-- استدعاء مكتبة الخط الزمني -->
+    <script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    <link href="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .instructions {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        #visualization {
+            width: 100%;
+            height: 650px;
+            border: 1px solid #bdc3c7;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        /* ألوان مخصصة للتصنيفات لتبدو أجمل */
+        .vis-item {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        /* لون أشرطة الدول */
+        .vis-item.countries-style {
+            background-color: #f5b041;
+            border-color: #d35400;
+        }
+        /* لون أشرطة الشخصيات */
+        .vis-item.people-style {
+            background-color: #5dade2;
+            border-color: #2e4053;
+        }
+        /* لون أشرطة الأحداث */
+        .vis-item.events-style {
+            background-color: #a569bd;
+            border-color: #6c3483;
+        }
+        .vis-label {
+            font-weight: bold;
+            color: #2c3e50;
+            background-color: #ecf0f1;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>الخط الزمني التاريخي: حقبة التسعينات وما عاصرها</h1>
+    <p class="instructions">اضغطي على زر Ctrl مع تحريك عجلة الفأرة (Scroll) للتكبير والحفر داخل تفاصيل التسعينات.</p>
+
+    <div id="visualization"></div>
+
+    <script type="text/javascript">
+        // 1. التصنيفات العمودية
+        var groups = new vis.DataSet([
+            { id: 'countries', content: '🏛️ الكيانات والدول' },
+            { id: 'people', content: '👤 شخصيات عاصرت التسعينات' },
+            { id: 'events', content: '📅 أحداث التسعينات البارزة' }
+        ]);
+
+        // 2. بيانات التسعينات (بداية ونهاية الكيانات والشخصيات والأحداث)
+        var items = new vis.DataSet([
+            
+            // --- قسم الدول والكيانات ---
+            {
+                id: 1,
+                group: 'countries',
+                content: 'الاتحاد السوفيتي (تفكك في التسعينات)',
+                start: '1922-12-30',
+                end: '1991-12-26',
+                type: 'range',
+                className: 'countries-style'
+            },
+            {
+                id: 2,
+                group: 'countries',
+                content: 'جمهورية يوغوسلافيا الاتحادية',
+                start: '1945-11-29',
+                end: '1992-04-27',
+                type: 'range',
+                className: 'countries-style'
+            },
+            {
+                id: 3,
+                group: 'countries',
+                content: 'اتحاد ألمانيا الشرقية والغربية (إعادة توحيد ألمانيا)',
+                start: '1990-10-03',
+                end: '2026-01-01', // ممتدة ومستمرة
+                type: 'range',
+                className: 'countries-style'
+            },
+            {
+                id: 4,
+                group: 'countries',
+                content: 'جمهورية اليمن الموحدة (اندماج الشمال والجنوب)',
+                start: '1990-05-22',
+                end: '2026-01-01',
+                type: 'range',
+                className: 'countries-style'
+            },
+
+            // --- قسم الشخصيات ---
+            {
+                id: 5,
+                group: 'people',
+                content: 'الملك فهد بن عبدالعزيز آل سعود (فترة الحكم عاصرت التسعينات كاملة)',
+                start: '1982-06-13',
+                end: '2005-08-01',
+                type: 'range',
+                className: 'people-style'
+            },
+            {
+                id: 6,
+                group: 'people',
+                content: 'نيلسون مانديلا (رئاسة جنوب إفريقيا وإنهاء الفصل العنصري)',
+                start: '1994-05-10',
+                end: '1999-06-14',
+                type: 'range',
+                className: 'people-style'
+            },
+            {
+                id: 7,
+                group: 'people',
+                content: 'بيل كلينتون (فترة رئاسة الولايات المتحدة في التسعينات)',
+                start: '1993-01-20',
+                end: '2001-01-20',
+                type: 'range',
+                className: 'people-style'
+            },
+
+            // --- قسم الأحداث التاريخية في التسعينات ---
+            {
+                id: 8,
+                group: 'events',
+                content: 'حرب الخليج الثانية (تحرير الكويت)',
+                start: '1990-08-02',
+                end: '1991-02-28',
+                type: 'range',
+                className: 'events-style'
+            },
+            {
+                id: 9,
+                group: 'events',
+                content: 'حرب البوسنة والهرسك',
+                start: '1992-04-06',
+                end: '1995-12-14',
+                type: 'range',
+                className: 'events-style'
+            },
+            {
+                id: 10,
+                group: 'events',
+                content: 'إطلاق شبكة الإنترنت العالمية للجمهور (WWW)',
+                start: '1991-08-06',
+                type: 'point', // نقطة زمنية محددة لحدث مفصلي
+                className: 'events-style'
+            },
+            {
+                id: 11,
+                group: 'events',
+                content: 'اتفاقية أوسلو',
+                start: '1993-09-13',
+                type: 'point',
+                className: 'events-style'
+            }
+        ]);
+
+        // 3. إعدادات العرض والتحكم
+        var container = document.getElementById('visualization');
+        var options = {
+            orientation: {
+                axis: 'top',
+                item: 'top'
+            },
+            // التركيز الافتراضي عند فتح الصفحة يكون على فترة التسعينات مباشرة
+            start: '1988-01-01',
+            end: '2002-01-01',
+            
+            zoomKey: 'ctrlKey', // التكبير بـ Ctrl + سكرول للفأرة
+            horizontalScroll: false, 
+            verticalScroll: true,
+            moveable: true,
+            zoomable: true,
+            
+            // حدود التكبير والتصغير
+            zoomMin: 1000 * 60 * 60 * 24 * 30 * 6, // 6 أشهر كأقل حد للحفر بالتفاصيل
+            zoomMax: 1000 * 60 * 60 * 24 * 365 * 100 // 100 سنة كأقصى حد للتصغير
+        };
+
+        // 4. بناء الخط الزمني
+        var timeline = new vis.Timeline(container, items, groups, options);
+    </script>
+</body>
+</html>
